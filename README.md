@@ -83,6 +83,34 @@ To clear the static HTML cache, the editor must explicit select this during publ
 
 ![Example](https://raw.githubusercontent.com/kristofferkjeldby/SharedCache/main/readme.png)
 
+For configuration the SharedCache.Html addeds the following patch files:
+
+```
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/" xmlns:role="http://www.sitecore.net/xmlconfig/role/">
+    <sitecore role:require="ContentDelivery">
+        <settings>
+          <setting name="SharedCache.Html.SecondLevelSharedCustomCacheMethod" value="Redis" />
+          <setting name="SharedCache.Html.SharedCustomCacheClearOnly" value="false" />
+        </settings>
+    </sitecore>
+</configuration>
+```
+
+And:
+
+```
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/" xmlns:role="http://www.sitecore.net/xmlconfig/role/">
+    <sitecore role:require="ContentManagement">
+        <settings>
+          <setting name="SharedCache.Custom.SecondLevelSharedCustomCacheMethod" value="Redis" />
+          <setting name="SharedCache.Html.SharedCustomCacheClearOnly" value="true" />
+        </settings>
+    </sitecore>
+</configuration>
+```
+
+These files controls the second level cache method used for HTML caching. It also sets the CM server in ClearOnly mode. This means that HTML rendered on the CM server is not added to the second level cache which can prevent HTML content rendered from the master database from being added into the second level cache.
+
 ## SharedCache.Custom
 
 These three shared custom caches (`SharedCustomCache`, `SharedCustomListCache` and `SharedCustomDictionaryCache`) are implemented in the `SharedCache.Custom` project and include advanced option to control the clearing of a cache based on the publishing of items.
