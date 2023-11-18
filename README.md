@@ -125,7 +125,7 @@ namespace SharedCache.Custom.ClearPredicates
 }
 ```
 
-Of special notice is the property `ClearOnGlobal` and `UseSiteNameAsCacheKey` properties. The `ClearOnGlobal` determines whether the cache should be cleared for items not belonging to a site (items not from `Sitecore/Content`). 
+Of special notice is the property `ClearOnGlobal` and `UseSiteNameAsCacheKey` properties. The `ClearOnGlobal` determines whether the cache should be cleared for items not belonging to a site (items not descending from `sitecore/content`). 
 
 The `UseSiteNameAsCacheKey` is a bit special. Normally, if this is set for false, the entire cache is cleared is the `DoClear` returns true. However, we often use the custom shared cache in a way so that each site has a key within the cache (e.g. using the `SharedCustomListCache` to contain a list of some objects for each site). 
 
@@ -163,7 +163,7 @@ new SharedCustomListCache<MyCacheObject>(
 );
 ```
 
-This will create a `SharedCustomListCache` using the second level cache method configured in the setting `SharedCache.Html.SecondLevelSharedCustomCacheMethod`. This will allow us to use e.g. a FileStringCache locally and a RedisStringCache on test environments.
+This will create a `SharedCustomListCache` using the second level cache method configured in the `SharedCache.Html.SecondLevelSharedCustomCacheMethod` setting. This will allow us to use e.g. a `FileStringCache` locally and a `RedisStringCache` on test environments.
 It will also put the cache on the CM server in clearOnlyMode (configured in the setting `SharedCache.Html.SharedCustomCacheClearOnly`). This means that the cache on the CM server will not add content to the second level cache. This prevents unpublished items on the CM server from interfering with the CD servers cache. 
 
 Also, in this case the `AlwaysClearPredicate` has been set to `ClearOnGlobal = true` and `UseSiteNameAsCacheKey = true` which means that if an item is published within a specific site, the whole cache will not be cleared, but the publish will only remove the cache key matching the site name. 
