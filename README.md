@@ -18,6 +18,15 @@ Also, the SharedCache framework offers three _shared custom caches_ (`SharedCust
 
 Fundamental to the functionality of the SharedCache framework is `StringCache` implementions in the `SharedCache.Core` project. A `StringCache` is a simple cache that stores strings, lists of strings of dictionaries of strings. The SharedCache framework offers StringCache implementations using the HTTP session, the HTTP cache, the file system or Redis as a storage mechanism. The `StringCache` are not meant to be used directly, but to be injected into either a `SharedHtmlCache` or one of the _shared custom caches_ as a second level cache. This means that if either the `SharedHtmlCache` or one of the shared custom caches does not directly (in memory) has a requested cache key, it will look into the second level cache for the same key. This means that the shared caches still primary stores values in memory, and will only look in Redis is the local memory cache fails to produce a result. 
 
+### Supported storages:
+
+The `FileStringCache` uses the file system as a storage. It is a rather crude implementation, storing using keys as file names, and is not optimized for production use. To avoid problems with keys containing illegal characters, the `IndexedStringCache` is offered as an wrapper for the `FileStringCache`. It stores keys in a index, circumventing problems with illegal characters. These two cache providers are provided to help local testing or to use a shared cache in a situation where Redis is not available (e.g. on a local developers machine). 
+
+The `HttpCacheStringCache` uses the HttpCache as a storage mechanism, where as the `HttpSessionStringCache` uses the Session storage. Both are in-memory only, and provided for some of the same reasons as the `FileStringCache` – it allows running simulating a shared cache on a local machine.
+
+Finally the `RedisStringCache` offers the same capabilities as the other cache providers, but uses a Redis database. 
+When you create a string cache, you will always provide a name for the string cache. Becuase all the cache providers uses a shared storage (e.g. the file system or a Redis database), the `SharedCache.Core.StringCaches.Keys` namespace contains logic to wrap and unwrap keys. This allow to cache providers to use the same Redis database, without risking key collisions. It also allow one cache provider to be cleared without clearing other caches within the same storage.
+
 ## Shared custom caches
 
 ### Serialization
