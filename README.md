@@ -42,7 +42,7 @@ Uses the Http session as storage mechanism. Is in-memory only and provided for s
 
 #### RedisStringCache
 
-Offers the same capabilities as the other string caches but uses a Redis database. Will by default use the default Sitecore Redis connection string (`redis.sessions`).
+Offers the same capabilities as the other string caches but uses a Redis database. Will by default use the default Sitecore Redis connection string (`redis.sessions`). This can be changed by using the setting `SharedCache.Core.RedisConnectionStringName`. 
 
 ### Isolation
 
