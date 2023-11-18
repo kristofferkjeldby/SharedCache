@@ -14,11 +14,11 @@ The `SharedHtmlCache` is a replacement for the build in memory HTML cache offere
 
 Also, the SharedCache framework offers three _shared custom caches_ (`SharedCustomCache`, `SharedCustomListCache` and `SharedCustomDictionaryCache`). These caches can be used to store object, list of objects and dictionaries of objects of any serializable type. They can be used as a replacement for the custom caches provided by Sitecore, and offers the possiblity to use a second level shared cache. These cache are implemented in the `SharedCache.Custom` project, and include advanced option to control the clearing of a cache based on the publishing of items.
 
-## String caches
+### SharedCache.Core
 
 Fundamental to the functionality of the SharedCache framework is `StringCache` implementions in the `SharedCache.Core` project. A `StringCache` is a simple cache that stores strings, lists of strings of dictionaries of strings. The SharedCache framework offers StringCache implementations using the HTTP session, the HTTP cache, the file system or Redis as a storage mechanism. The `StringCache` are not meant to be used directly, but to be injected into either a `SharedHtmlCache` or one of the _shared custom caches_ as a second level cache. This means that if either the `SharedHtmlCache` or one of the shared custom caches does not directly (in memory) has a requested cache key, it will look into the second level cache for the same key. This means that the shared caches still primary stores values in memory, and will only look in Redis is the local memory cache fails to produce a result. 
 
-### Supported storages
+### Supported storage mechanisms
 
 The `FileStringCache` uses the file system as a storage. It is a rather crude implementation, storing using keys as file names, and is not optimized for production use. To avoid problems with keys containing illegal characters, the `IndexedStringCache` is offered as an wrapper for the `FileStringCache`. It stores keys in a index, circumventing problems with illegal characters. These two string caches are provided to help local testing or to use a shared cache in a situation where Redis is not available (e.g. on a local developers machine). 
 
