@@ -10,11 +10,11 @@ The SharedCache framework offers two kinds of Sitecore caches:
 
 The _shared html cache_ is a replacement for the build in memory HTML cache offered by Sitecore. The shared html cache still uses memory as a first level cache storage, but will use a shared string cache as a second level cache if a key is not found in the first level cache. 
 
-Also, the SharedCache framework offers three _shared custom caches_ . These caches can be used to store object, list of objects and dictionaries of objects of any serializable type. They can be used as a replacement for the custom caches provided by Sitecore, and offers the possiblity to use a second level shared cache as well.
+Also, the SharedCache framework offers three _shared custom caches_ . These caches can be used to store object, list of objects and dictionaries of objects of any serializable type. They can be used as a replacement for the custom caches provided by Sitecore, and offers the possibility to use a second level shared cache as well.
 
 ## SharedCache.Core
 
-Fundamental to the functionality of the SharedCache framework is `StringCache` implementions in the `SharedCache.Core` project. A `StringCache` is a simple cache that stores strings, lists of strings of dictionaries of strings. The SharedCache framework offers StringCache implementations using the HTTP session, the HTTP cache, the file system or Redis as a storage mechanism. 
+Fundamental to the functionality of the SharedCache framework is `StringCache` implementations in the `SharedCache.Core` project. A `StringCache` is a simple cache that stores strings, lists of strings of dictionaries of strings. The SharedCache framework offers StringCache implementations using the HTTP session, the HTTP cache, the file system or Redis as a storage mechanism. 
 
 The `StringCache` are not meant to be used directly (although they can), but to be injected into either a shared html cache or one of the shared custom caches as a second level cache. This means that if either the `SharedHtmlCache` or one of the shared custom caches does not directly (in the first level memory cache) has a requested cache key, it will look into the second level cache for the same key. 
 
