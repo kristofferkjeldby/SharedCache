@@ -2,8 +2,6 @@
 
 Redis cache framework for Sitecore XM/XP
 
-![Example](https://raw.githubusercontent.com/kristofferkjeldby/SharedCache/main/readme.png)
-
 ## Introduction
 
 The SharedCache framework is an extension to the build in caches in Sitecore. It offers the ability for multiple CD instances to share a single _shared cache_ (hosted either in the filesystem, memory or in Redis). In a large Sitecore solution with multiple CD servers this will result in improved performance as the cached data from one instance can be reused by other instances. This is especially important if the number of CD instances vary, as new CD instaces will prefetch the cache from the shared cache.
@@ -80,6 +78,10 @@ namespace SharedCache.Core.Serialization
 ## Shared HTML cache
 
 The shared HTML cache is implemented in the `SharedCache.Html` project. This contains the needed infrastructure to allow allow a single site in Sitecore to use multiple HTML caches which can improve performance on large sites as a publish does not nessasary needs to clear all cached HTML content. In the current implementation each site has two shared HTML caches - one for ordinary content and one for static content (like headers and footers). Which cache to use for a particular rendering is configured by added a shared checkbox to the rendering template called `UseStaticHtmlCache`.
+
+To clear the static HTML cache, the editor must explicit select this during publishing:
+
+![Example](https://raw.githubusercontent.com/kristofferkjeldby/SharedCache/main/readme.png)
 
 ## Shared custom caches
 
