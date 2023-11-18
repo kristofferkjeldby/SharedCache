@@ -7,6 +7,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using SharedCache.Core.Helpers;
 
     /// <summary>
     /// An implementation of a shared custom list cache. The custom shared list cache support the storage of a list of generic TValues for each site.
@@ -23,16 +24,16 @@
         /// Initializes a new instance of the <see cref="SharedCustomListCache{TValue}"/> class.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <param name="secondLevelCache">The second level cache.</param>
         /// <param name="clearPredicate">The clear predicate.</param>
         /// <param name="valueCacheSerializer">The value cache serializer controlling the serialization of the generic object to the second level cache.</param>
+        /// <param name="secondLevelCache">The second level cache.</param>
         /// <param name="clearOnly">Whether to put the second level cache in clear only mode.</param>
-        public SharedCustomListCache(string name, StringCache secondLevelCache, ClearPredicate clearPredicate, ICacheSerializer<TValue> valueCacheSerializer, bool clearOnly = false) : base(name, clearPredicate)
+        public SharedCustomListCache(string name, ClearPredicate clearPredicate, ICacheSerializer<TValue> valueCacheSerializer, StringCache secondLevelCache = null, bool? clearOnly = null) : base(name, clearPredicate)
         {
-            this.secondLevelCache = secondLevelCache;
             this.valueSerialize = valueCacheSerializer.Serialize;
             this.valueDeserialize = valueCacheSerializer.Deserialize;
-            this.clearOnly = clearOnly;
+            this.secondLevelCache = secondLevelCache ?? StringCacheFactory.GetOrCreateStringCache(name, Sitecore.Configuration.Settings.GetSetting(Constants.SecondLevelSharedCustomCacheMethodSetting));
+            this.clearOnly = clearOnly ?? Sitecore.Configuration.Settings.GetBoolSetting(Constants.SharedCustomCacheClearOnlySetting, false);
 
             Initialize();
         }

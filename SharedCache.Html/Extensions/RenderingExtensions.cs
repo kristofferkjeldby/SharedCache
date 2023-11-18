@@ -19,9 +19,9 @@
             if (siteInfo == null)
                 return null;
 
-            return (rendering?.RenderingItem?.InnerItem?.Fields["UseStaticHtmlCache"]?.Value == "1") ?
+            return (rendering?.RenderingItem?.InnerItem?.Fields[Constants.UseStaticHtmlCacheFieldName]?.Value == "1") ?
             siteInfo.GetSharedHtmlCache(Constants.StaticHtmlCacheName) :
-            siteInfo.GetSharedHtmlCache(Constants.ContentHtmlCacheName);
+            siteInfo.GetSharedHtmlCache(Constants.HtmlCacheName);
         }
     }
 }

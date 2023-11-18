@@ -6,8 +6,13 @@
     public class Constants
     {
         /// <summary>
-        /// Which mode to use for the shared custom cache
+        /// The second level shared custom cache method setting
         /// </summary>
-        public static string SharedCustomCacheModeSetting = "SharedCache.Custom.SharedCustomCacheMode";
+        public static string SecondLevelSharedCustomCacheMethodSetting = "SharedCache.Custom.SecondLevelSharedCustomCacheMethod";
+
+        /// <summary>
+        /// The shared custom cache clear only setting
+        /// </summary>
+        public static string SharedCustomCacheClearOnlySetting = "SharedCache.Html.SharedCustomCacheClearOnly";
     }
 }

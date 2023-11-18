@@ -4,6 +4,7 @@
     using SharedCache.Core.StringCaches;
     using System;
     using SharedCache.Custom.ClearPredicates;
+    using SharedCache.Core.Helpers;
 
     /// <summary>
     /// An implementation of a shared custom cache. The custom cache support the storage of a generic TValue.
@@ -20,15 +21,18 @@
         /// Initializes a new instance of the <see cref="SharedCustomCache{TValue}"/> class.
         /// </summary>
         /// <param name="name">The name of the cache.</param>
-        /// <param name="secondLevelCache">The second level cache</param>
+
         /// <param name="clearPredicate">The clear predicate controlling when and how the cache is cleared.</param>
         /// <param name="valueCacheSerializer">The value cache serializer controlling the serialization of the generic object to the second level cache.</param>
+        /// <param name="secondLevelCache">The second level cache</param>
         /// <param name="clearOnly">Whether to put the second level cache in clear only mode.</param>
-        public SharedCustomCache(string name, StringCache secondLevelCache, ClearPredicate clearPredicate, ICacheSerializer<TValue> valueCacheSerializer, bool clearOnly = false) : base(name, clearPredicate)
+        public SharedCustomCache(string name, ClearPredicate clearPredicate, ICacheSerializer<TValue> valueCacheSerializer, StringCache secondLevelCache = null, bool? clearOnly = null) : base(name, clearPredicate)
         {
-            this.secondLevelCache = secondLevelCache;
             this.valueCacheSerializer = valueCacheSerializer;
-            this.clearOnly = clearOnly;
+            this.secondLevelCache = secondLevelCache;
+            this.secondLevelCache = secondLevelCache ?? StringCacheFactory.GetOrCreateStringCache(name, Sitecore.Configuration.Settings.GetSetting(Constants.SecondLevelSharedCustomCacheMethodSetting));
+            this.clearOnly = clearOnly ?? Sitecore.Configuration.Settings.GetBoolSetting(Constants.SharedCustomCacheClearOnlySetting, false);
+
             Initialize();
         }
 

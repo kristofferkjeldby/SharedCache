@@ -73,7 +73,7 @@
             foreach (var site in sites)
             {
                 if (clearCacheFlag.HasFlag(ClearHtmlCacheFlag.ContentHtmlCache))
-                    this.ClearHtmlCache(site, Constants.ContentHtmlCacheName, clearSecondLevelCache);
+                    this.ClearHtmlCache(site, Constants.HtmlCacheName, clearSecondLevelCache);
 
                 if (clearCacheFlag.HasFlag(ClearHtmlCacheFlag.StaticHtmlCache))
                     this.ClearHtmlCache(site, Constants.StaticHtmlCacheName, clearSecondLevelCache);

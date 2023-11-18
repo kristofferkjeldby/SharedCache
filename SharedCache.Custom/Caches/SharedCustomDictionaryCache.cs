@@ -7,6 +7,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using SharedCache.Core.Serialization;
+    using SharedCache.Core.Helpers;
 
     /// <summary>
     /// An implementation of a shared custom dictionary cache. The shared cache support the storage of a dictionary of generic 
@@ -26,19 +27,20 @@
         /// Initializes a new instance of the <see cref="SharedCustomDictionaryCache{TKey, TValue}"/> class.
         /// </summary>
         /// <param name="name">The name of the cache.</param>
-        /// <param name="stringCache">The second level cache</param>
+
         /// <param name="clearPredicate">The clear predicate controlling when and how the cache is cleared.</param>
         /// <param name="keyCacheSerializer">The key cache serializer controlling the serialization of the TKey to the second level cache.</param>
         /// <param name="valueCacheSerializer">The value cache serializer controlling the serialization of the TValue to the second level cache.</param>
+        /// <param name="secondLevelCache">The second level cache</param>
         /// <param name="clearOnly">Whether to put the second level cache in clear only mode.</param>
-        public SharedCustomDictionaryCache(string name, StringCache stringCache, ClearPredicate clearPredicate, ICacheSerializer<TKey> keyCacheSerializer, ICacheSerializer<TValue> valueCacheSerializer, bool clearOnly = false) : base(name, clearPredicate)
+        public SharedCustomDictionaryCache(string name, ClearPredicate clearPredicate, ICacheSerializer<TKey> keyCacheSerializer, ICacheSerializer<TValue> valueCacheSerializer, StringCache secondLevelCache = null, bool? clearOnly = null) : base(name, clearPredicate)
         {
-            this.secondLevelCache = stringCache;
             this.keySerializer = keyCacheSerializer.Serialize;
             this.keyDeserialize = keyCacheSerializer.Deserialize;
             this.valueSerialize = valueCacheSerializer.Serialize;
             this.valueDeserialize = valueCacheSerializer.Deserialize;
-            this.clearOnly = clearOnly;
+            this.secondLevelCache = secondLevelCache ?? StringCacheFactory.GetOrCreateStringCache(name, Sitecore.Configuration.Settings.GetSetting(Constants.SecondLevelSharedCustomCacheMethodSetting));
+            this.clearOnly = clearOnly ?? Sitecore.Configuration.Settings.GetBoolSetting(Constants.SharedCustomCacheClearOnlySetting, false);
 
             Initialize();
         }
