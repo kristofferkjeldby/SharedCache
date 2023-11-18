@@ -56,6 +56,50 @@ namespace SharedCache.Core.Serialization
 }
 ```
 
+### Cache clearing
+
+The shared custom cache supports cache clearing whenever a `item:saved`, `publish:end` or `publish:end:remote` event is trigged. In a normal scenario only the `publish:end` event would clear the second level cache, whereas all events will clear the local memory cache. The logic to determine whether a specific save or publish event should clear a particular cache is encapsulated in a `ClearPredicate`:
+
+```
+namespace SharedCache.Custom.ClearPredicates
+{
+    using Sitecore.Configuration;
+    using Sitecore.Data;
+    using Sitecore.Data.Events;
+    using Sitecore.Data.Items;
+    using Sitecore.Events;
+
+    /// <summary>
+    /// Abstract class for a clear predicate
+    /// </summary>
+    public abstract class ClearPredicate
+    {
+        /// <summary>
+        /// Gets or sets a value indicating whether to clear on global publish.
+        /// </summary>
+        public abstract bool ClearOnGlobal { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether use site name as cache key
+        /// </summary>
+        public abstract bool UseSiteNameAsCacheKey { get; } 
+
+        /// <summary>
+        /// Determines whether to clear the cache.
+        /// </summary>
+        public abstract bool DoClear(Item item);
+    }
+}
+```
+
+Of special notice is the property `ClearOnGlobal` and `UseSiteNameAsCacheKey`. The `ClearOnGlobal` determines whether the cache should be cleared for items not belonging to a site (items not from `Sitecore/Content`). The `UseSiteNameAsCacheKey` is a bit special. Normally, if this is set for false, the entire cache is cleared is the `DoClear` returns true. However, I often use the custom shared cache in a way so that each site has a key within the cache (e.g. using the `SharedCustomListCache` to contain a list of some objects for each site). In that case I do not want to clear the entire cache upon a publish, I simply want to remove the particular key for the published site. If setting the `UseSiteNameAsCacheKey` to true, this is what is going to happen for items that belong to a particular site (global items will still clear the entire cache if ClearOnGlobal is true).
+
+
+
+
+
+
+
 
 
 
