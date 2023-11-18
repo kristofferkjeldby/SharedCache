@@ -22,7 +22,7 @@
     {
         private readonly object cacheLock = new object();
 
-        private readonly IClearPredicate clearPredicate;
+        private readonly ClearPredicate clearPredicate;
 
         /// <summary>
         /// The event dictionary
@@ -34,7 +34,7 @@
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="clearPredicate">The clear predicate.</param>
-        public CustomCache(string name, IClearPredicate clearPredicate) : base((CacheManager.FindCacheByName<string>(name) as GenericCache)?.InnerCache ?? CacheManager.GetNamedInstance(name, StringUtil.ParseSizeString("10MB"), false))
+        public CustomCache(string name, ClearPredicate clearPredicate) : base((CacheManager.FindCacheByName<string>(name) as GenericCache)?.InnerCache ?? CacheManager.GetNamedInstance(name, StringUtil.ParseSizeString("10MB"), false))
         {
             this.clearPredicate = clearPredicate;
 
@@ -59,7 +59,7 @@
             if (!(eventArgs is SitecoreEventArgs sitecoreArgs) || sitecoreArgs.Parameters.Length < 2)
                 return;
 
-            if (!this.clearPredicate.Execute(sitecoreArgs))
+            if (!this.clearPredicate.DoClear(sitecoreArgs))
                 return;
 
             this.ClearCacheForItem((sitecoreArgs.Parameters[1] as ItemChanges)?.Item, false);
@@ -73,6 +73,9 @@
             if (!(args is SitecoreEventArgs sitecoreArgs))
                 return;
 
+            if (!this.clearPredicate.DoClear(sitecoreArgs))
+                return;
+
             var publisher = sitecoreArgs.Parameters[0] as Publisher;
 
             this.ClearCacheForItem(publisher?.Options.RootItem, true);
@@ -83,10 +86,13 @@
         /// </summary>
         public void OnPublishEndRemote(object sender, EventArgs args)
         {
-            if (!(args is PublishEndRemoteEventArgs sitecoreArgs))
+            if (!(args is PublishEndRemoteEventArgs publishEndRemoteEventArgs))
                 return;
 
-            this.ClearCacheForItem(Factory.GetDatabase("Web").GetItem(new ID(sitecoreArgs.RootItemId)), false);
+            if (!this.clearPredicate.DoClear(publishEndRemoteEventArgs))
+                return;
+
+            this.ClearCacheForItem(Factory.GetDatabase(publishEndRemoteEventArgs.TargetDatabaseName).GetItem(new ID(publishEndRemoteEventArgs.RootItemId)), false);
         }
 
         #endregion
@@ -150,10 +156,15 @@
             {
                 if (clearPredicate.ClearOnGlobal)
                     this.Clear(clearSecondLevelCache);
-                return;
             }
+            else
+            {
+                if (clearPredicate.UseSiteNameAsCacheKey)
+                   this.Remove(site.Name, clearSecondLevelCache);
+                else
+                    this.Clear(clearSecondLevelCache);
 
-            this.Remove(site.Name, clearSecondLevelCache);
+            }
         }
 
         /// <summary>

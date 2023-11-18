@@ -3,23 +3,23 @@
     using SharedCache.Custom.Extensions;
     using Sitecore.Data;
     using Sitecore.Data.Items;
-    using Sitecore.Events;
     using System.Linq;
 
     /// <summary>
     /// Encapsulate the clear predicate logic for custom caches based on templates
     /// </summary>
-    public class TemplateClearPredicate : IClearPredicate
+    public class TemplateClearPredicate : ClearPredicate
     {
         /// <summary>
         /// Gets or sets a value indicating whether to include derived templates.
         /// </summary>
         public bool IncludeDerivedTemplates { get; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to clear on global publish.
-        /// </summary>
-        public bool ClearOnGlobal { get; }
+        /// <inheritdoc/>
+        public override bool ClearOnGlobal { get; }
+
+        /// <inheritdoc/>
+        public override bool UseSiteNameAsCacheKey { get; }
 
         /// <summary>
         /// Gets or sets the predicates template ids.
@@ -29,28 +29,28 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="TemplateClearPredicate"/> class.
         /// </summary>
-        public TemplateClearPredicate(bool clearOnGlobalPublish, bool includeDerivedTemplates, params ID[] predicateTemplatesIds)
+        public TemplateClearPredicate(bool clearOnGlobalPublish, bool useSiteNameAsCacheKey, bool includeDerivedTemplates, params ID[] predicateTemplatesIds)
         {
             this.ClearOnGlobal = clearOnGlobalPublish;
+            this.UseSiteNameAsCacheKey = useSiteNameAsCacheKey; 
             this.IncludeDerivedTemplates = includeDerivedTemplates;
             this.PredicateTemplateIds = predicateTemplatesIds;
         }
 
-        /// <summary>
-        /// Clears the cache
-        /// </summary>
-        public bool Execute(SitecoreEventArgs args)
+        /// <inheritdoc/>
+        public override bool DoClear(Item item)
         {
-            if (!(args.Parameters[1] is ItemChanges itemChanges))
+
+            if (item == null)
                 return false;
 
             if (PredicateTemplateIds == null)
-                return true;
+                return false;
 
             if (IncludeDerivedTemplates)
-                return this.PredicateTemplateIds.Any(tid => itemChanges.Item.IsDerived(tid));
+                return this.PredicateTemplateIds.Any(tid => item.IsDerived(tid));
 
-            return this.PredicateTemplateIds.Contains(itemChanges.Item.TemplateID);
+            return this.PredicateTemplateIds.Contains(item.TemplateID);
         }
     }
 }

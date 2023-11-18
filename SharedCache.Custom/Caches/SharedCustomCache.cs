@@ -24,7 +24,7 @@
         /// <param name="clearPredicate">The clear predicate controlling when and how the cache is cleared.</param>
         /// <param name="valueCacheSerializer">The value cache serializer controlling the serialization of the generic object to the second level cache.</param>
         /// <param name="clearOnly">Whether to put the second level cache in clear only mode.</param>
-        public SharedCustomCache(string name, StringCache secondLevelCache, IClearPredicate clearPredicate, ICacheSerializer<TValue> valueCacheSerializer, bool clearOnly) : base(name, clearPredicate)
+        public SharedCustomCache(string name, StringCache secondLevelCache, ClearPredicate clearPredicate, ICacheSerializer<TValue> valueCacheSerializer, bool clearOnly) : base(name, clearPredicate)
         {
             this.secondLevelCache = secondLevelCache;
             this.valueCacheSerializer = valueCacheSerializer;
