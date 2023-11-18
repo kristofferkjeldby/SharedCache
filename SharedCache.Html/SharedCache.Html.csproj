@@ -114,9 +114,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Config\Include\Foundation\SharedCache.CD.config" />
-    <Content Include="App_Config\Include\Foundation\SharedCache.CM.config" />
-    <Content Include="App_Config\Include\Foundation\SharedCache.config" />
+    <Content Include="App_Config\Include\Foundation\SharedCache.Html.CD.config" />
+    <Content Include="App_Config\Include\Foundation\SharedCache.Html.CM.config" />
+    <Content Include="App_Config\Include\Foundation\SharedCache.Html.config" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\CD.pubxml" />
     <None Include="Properties\PublishProfiles\CM.pubxml" />
