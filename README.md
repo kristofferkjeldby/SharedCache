@@ -127,14 +127,22 @@ The logic for the clearing of shared custom caches can be described using this p
 
 ```
 if DoClear
-	if IsGlobalItem
-		if ClearOnGlobal 
-			clear
-	if IsSiteItem
-		if UseSiteNameAsCacheKey 
-			remove key
-		else
-			clear
+
+  if IsGlobalItem <-- Item not part of a site (e.g. a template)
+    if ClearOnGlobal 
+      clear
+      if publish:end
+         clear string cache
+
+  if IsSiteItem <-- Item not part of a site (e.g. a sitecore/content/Home)
+    if UseSiteNameAsCacheKey 
+      remove key
+      if publish:end
+         remove key from string cache
+    else
+      clear
+      if publish:end
+         clear string cache
 ```
 
 
