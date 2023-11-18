@@ -1,7 +1,7 @@
 ﻿namespace SharedCache.Custom.Caches
 {
     using SharedCache.Core.Serialization;
-    using SharedCache.Core.Providers;
+    using SharedCache.Core.StringCaches;
     using System;
     using SharedCache.Custom.ClearPredicates;
 

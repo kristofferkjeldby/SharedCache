@@ -1,6 +1,6 @@
 ﻿namespace SharedCache.Tests.StringCaches.Keys
 {
-    using SharedCache.Core.Providers.Keys;
+    using SharedCache.Core.StringCaches.Keys;
     using System;
     using Xunit;
 

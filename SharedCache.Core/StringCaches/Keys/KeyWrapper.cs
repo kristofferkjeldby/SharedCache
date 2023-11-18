@@ -1,4 +1,4 @@
-﻿namespace SharedCache.Core.Providers.Keys
+﻿namespace SharedCache.Core.StringCaches.Keys
 {
     using System;
     using System.Linq;

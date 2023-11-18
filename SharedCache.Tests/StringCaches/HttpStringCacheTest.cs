@@ -1,6 +1,6 @@
 ﻿namespace SharedCache.Tests.StringCaches
 {
-    using SharedCache.Core.Providers;
+    using SharedCache.Core.StringCaches;
     using Xunit;
 
     public class HttpStringCacheTests : StringCacheTests

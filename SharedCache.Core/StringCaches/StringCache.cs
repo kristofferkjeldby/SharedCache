@@ -1,4 +1,4 @@
-﻿namespace SharedCache.Core.Providers
+﻿namespace SharedCache.Core.StringCaches
 {
     using System;
     using System.Collections.Generic;

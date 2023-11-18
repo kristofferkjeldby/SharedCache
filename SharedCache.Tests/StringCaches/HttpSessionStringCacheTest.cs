@@ -1,6 +1,6 @@
 ﻿namespace SharedCache.Tests.StringCaches
 {
-    using SharedCache.Core.Providers;
+    using SharedCache.Core.StringCaches;
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;

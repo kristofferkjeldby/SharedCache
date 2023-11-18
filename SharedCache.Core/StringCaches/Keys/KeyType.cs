@@ -1,4 +1,4 @@
-﻿namespace SharedCache.Core.Providers.Keys
+﻿namespace SharedCache.Core.StringCaches.Keys
 {
     /// <summary>
     /// Key types - Main keys must me 3 chars long

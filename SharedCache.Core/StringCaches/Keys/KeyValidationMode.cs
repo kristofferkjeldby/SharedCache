@@ -1,4 +1,4 @@
-﻿namespace SharedCache.Core.Providers.Keys
+﻿namespace SharedCache.Core.StringCaches.Keys
 {
     /// <summary>
     /// Represents the key validation mode

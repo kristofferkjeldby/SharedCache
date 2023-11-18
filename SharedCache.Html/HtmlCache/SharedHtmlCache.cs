@@ -1,7 +1,7 @@
 ﻿namespace SharedCache.Html.HtmlCache
 {
     using SharedCache.Core.Models;
-    using SharedCache.Core.Providers;
+    using SharedCache.Core.StringCaches;
     using Sitecore.Caching;
     using Sitecore.Configuration;
     using Sitecore.Diagnostics;

@@ -4,7 +4,7 @@
     using Xunit;
     using System;
     using System.Threading;
-    using SharedCache.Core.Providers;
+    using SharedCache.Core.StringCaches;
 
     public abstract class StringCacheTests
     {

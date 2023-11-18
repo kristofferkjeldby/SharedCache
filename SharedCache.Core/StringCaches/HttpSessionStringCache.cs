@@ -1,7 +1,7 @@
-﻿namespace SharedCache.Core.Providers
+﻿namespace SharedCache.Core.StringCaches
 {
     using SharedCache.Core.Extensions;
-    using SharedCache.Core.Providers.Keys;
+    using SharedCache.Core.StringCaches.Keys;
     using System;
     using System.Collections.Generic;
     using System.Linq;

@@ -1,7 +1,7 @@
 ﻿namespace SharedCache.Custom.Caches
 {
     using SharedCache.Custom.ClearPredicates;
-    using SharedCache.Core.Providers;
+    using SharedCache.Core.StringCaches;
     using SharedCache.Models;
     using System;
     using System.Collections.Generic;

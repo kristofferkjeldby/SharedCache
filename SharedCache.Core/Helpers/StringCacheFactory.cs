@@ -1,7 +1,7 @@
 ﻿namespace SharedCache.Core.Helpers
 {
     using SharedCache.Core.Models;
-    using SharedCache.Core.Providers;
+    using SharedCache.Core.StringCaches;
     using System;
     using System.Collections.Generic;
     using System.IO;
