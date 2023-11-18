@@ -1,24 +1,24 @@
 # SharedCache
 
-
-
 ## Introduction
 
-The SharedCache framework is an extension to the build in caches in SitecoreXM/XP. It offers the ability for multiple CD instances to share a single _shared cache_ (hosted either in the filesystem, memory or in Redis). In a large Sitecore solution with multiple CD servers this will result in improved performance as the cached data from one instance can be reused by other instances. This is especially important if the number of CD instances vary, as new CD instaces will prefetch the cache from the shared cache.
+The SharedCache framework is an extension to the build in caches in SitecoreXM/XP. It offers the ability for multiple CD instances to share a single _shared cache_ (hosted either in the filesystem, memory or in Redis). 
+
+In a large Sitecore solution with multiple CD servers this will result in improved performance as the cached data from one instance can be reused by other instances. This is especially important if the number of CD instances vary, as new CD instaces will prefetch the cache from the shared cache.
 
 The SharedCache framework offers two kinds of Sitecore caches: 
 
-The _shared html cache_ is a replacement for the build in memory HTML cache offered by Sitecore. The shared html cache still primarily uses memory as a cache storage, but will use a shared string cache as a second level cache. 
+The _shared html cache_ is a replacement for the build in memory HTML cache offered by Sitecore. The shared html cache still uses memory as a first level cache storage, but will use a shared string cache as a second level cache if a key is not found in the first level cache. 
 
-Also, the SharedCache framework offers three _shared custom caches_ . These caches can be used to store object, list of objects and dictionaries of objects of any serializable type. They can be used as a replacement for the custom caches provided by Sitecore, and offers the possiblity to use a second level shared cache.
+Also, the SharedCache framework offers three _shared custom caches_ . These caches can be used to store object, list of objects and dictionaries of objects of any serializable type. They can be used as a replacement for the custom caches provided by Sitecore, and offers the possiblity to use a second level shared cache as well.
 
 ## SharedCache.Core
 
 Fundamental to the functionality of the SharedCache framework is `StringCache` implementions in the `SharedCache.Core` project. A `StringCache` is a simple cache that stores strings, lists of strings of dictionaries of strings. The SharedCache framework offers StringCache implementations using the HTTP session, the HTTP cache, the file system or Redis as a storage mechanism. 
 
-The `StringCache` are not meant to be used directly (although they can), but to be injected into either a shared html cache or one of the shared custom caches as a second level cache. This means that if either the `SharedHtmlCache` or one of the shared custom caches does not directly (in memory) has a requested cache key, it will look into the second level cache for the same key. 
+The `StringCache` are not meant to be used directly (although they can), but to be injected into either a shared html cache or one of the shared custom caches as a second level cache. This means that if either the `SharedHtmlCache` or one of the shared custom caches does not directly (in the first level memory cache) has a requested cache key, it will look into the second level cache for the same key. 
 
-This means that the shared caches still primary stores values in memory, and will only look in Redis is the local memory cache fails to produce a result. 
+So whilethe shared caches still primary stores values in memory, and will only look in e.g., Redis is the local first level cache fails to produce a result. 
 
 ### Supported storage mechanisms
 
@@ -89,7 +89,9 @@ These three shared custom caches (`SharedCustomCache`, `SharedCustomListCache` a
 
 ### Cache clearing
 
-The shared custom cache supports cache clearing whenever a `item:saved`, `publish:end` or `publish:end:remote` event is trigged. In a normal scenario only the `publish:end` event would clear the second level cache, whereas all events will clear the local memory cache. The logic to determine whether a specific save or publish event should clear a particular cache is encapsulated in a `ClearPredicate`:
+The shared custom caches are added to the Sitecore Cache Manager and can be cleared like any other caches, e.g., via the API or the Cache administrative tool.
+
+However, the shared custom cache also supports cache clearing whenever a `item:saved`, `publish:end` or `publish:end:remote` event is trigged. In a normal scenario only the `publish:end` event would clear the second level cache, whereas all events will clear the local memory cache. The logic to determine whether a specific save or publish event should clear a particular cache is encapsulated in a `ClearPredicate`:
 
 ```
 namespace SharedCache.Custom.ClearPredicates
@@ -123,7 +125,7 @@ namespace SharedCache.Custom.ClearPredicates
 }
 ```
 
-Of special notice is the property `ClearOnGlobal` and `UseSiteNameAsCacheKey`. The `ClearOnGlobal` determines whether the cache should be cleared for items not belonging to a site (items not from `Sitecore/Content`). 
+Of special notice is the property `ClearOnGlobal` and `UseSiteNameAsCacheKey` properties. The `ClearOnGlobal` determines whether the cache should be cleared for items not belonging to a site (items not from `Sitecore/Content`). 
 
 The `UseSiteNameAsCacheKey` is a bit special. Normally, if this is set for false, the entire cache is cleared is the `DoClear` returns true. However, we often use the custom shared cache in a way so that each site has a key within the cache (e.g. using the `SharedCustomListCache` to contain a list of some objects for each site). 
 
@@ -168,6 +170,9 @@ Often instead of using the `AlwaysClearPredicate` clear predicate, a better alte
 
 Also instead of hard-coding the second level cache, SharedCache offers a StringCacheFactory where the type can be read for e.g. a Sitecore setting. This will allow us to use e.g. a FileStringCache locally and a RedisStringCache on test environments.
 
+## Initialization of shared caches
+
+All the shared caches will do a prefetch upon initialization. This means that they will fetch all keys from the second level cache and load them into the first level memory cache. This is an important component in the optimizations offered by the SharedCache framework for solutions where new CD instances is created - e.g., via auto scaling. This means that all new instances will have filled up caches immediately after initialization.
 
 
 
