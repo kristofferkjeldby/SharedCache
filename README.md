@@ -34,8 +34,6 @@ Fundamental to the functionality of the SharedCache framework is `StringCache` i
 
 When you create a string cache, you will always provide a name for the string cache. Becuase all the string caches uses a shared storage (e.g. the file system or a Redis database), the `SharedCache.Core.StringCaches.Keys` namespace contains logic to wrap and unwrap keys. This allow two string caches to use the same Redis database, without risking key collisions. It also allow one string cache to be cleared without clearing other caches within the same storage.
 
-## Shared custom caches
-
 ### Serialization
 
 To support the storage of a object of any type into the second level string caches, the SharedCache uses JSON serialization. As the SharedHtmlCache already stored strings of HTML, this is relevant only for the shared custom caches. However, the cache mechanism can be overwritten for a specific shared custom cache by implementing the `SharedCache.Core.Serialization.ICacheSerializer<T>` interface:
@@ -62,6 +60,10 @@ namespace SharedCache.Core.Serialization
     }
 }
 ```
+
+## Shared custom caches
+
+
 
 ### Cache clearing
 
