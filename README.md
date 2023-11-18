@@ -75,7 +75,7 @@ namespace SharedCache.Core.Serialization
 }
 ```
 
-## Shared HTML cache
+## SharedCache.Html
 
 The shared HTML cache is implemented in the `SharedCache.Html` project. This contains the needed infrastructure to allow allow a single site in Sitecore to use multiple HTML caches which can improve performance on large sites as a publish does not nessasary needs to clear all cached HTML content. In the current implementation each site has two shared HTML caches - one for ordinary content and one for static content (like headers and footers). Which cache to use for a particular rendering is configured by added a shared checkbox to the rendering template called `UseStaticHtmlCache`.
 
@@ -83,7 +83,7 @@ To clear the static HTML cache, the editor must explicit select this during publ
 
 ![Example](https://raw.githubusercontent.com/kristofferkjeldby/SharedCache/main/readme.png)
 
-## Shared custom caches
+## SharedCache.Custom
 
 These three shared custom caches (`SharedCustomCache`, `SharedCustomListCache` and `SharedCustomDictionaryCache`) are implemented in the `SharedCache.Custom` project, and include advanced option to control the clearing of a cache based on the publishing of items.
 
