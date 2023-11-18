@@ -40,7 +40,7 @@ Uses the Http cache as a storage mechanism. Is in-memory only, and provided for 
 
 #### HttpSessionStringCache
 
-`HttpSessionStringCache`: Uses the Session storage. Is in-memory only, and provided for some of the same reasons as the `FileStringCache` – it allows running simulating a shared cache on a local machine.
+Uses the Http session as storage mechanism. Is in-memory only, and provided for some of the same reasons as the `FileStringCache` – it allows running simulating a shared cache on a local machine.
 
 #### RedisStringCache
 
