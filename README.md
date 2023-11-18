@@ -159,7 +159,6 @@ new SharedCustomListCache<MyCacheObject>(
    new RedisStringCache(cacheName),
    new AlwaysClearPredicate(true, true),
    new JsonCacheSerializer<MyCacheObject>(),
-   false
 );
 ```
 
