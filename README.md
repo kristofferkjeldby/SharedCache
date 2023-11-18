@@ -230,7 +230,7 @@ This will create a `SharedCustomListCache` using the second level cache method c
 
 Both the `StringCache` second level cache and the `clearOnly` exists as optional properties on the constructor, but leaving them out will use the values configured in the config files above. 
 
-In this case the `AlwaysClearPredicate` has been set to `ClearOnGlobal = true` and `UseSiteNameAsCacheKey = true` (the two constructor paramenters) which means that if an item is published within a specific site, the whole cache will not be cleared, but the publish will only remove the cache key matching the site name. 
+In this case the `AlwaysClearPredicate` has been set to `ClearOnGlobal = true` and `UseSiteNameAsCacheKey = true` (the two constructor parameters) which means that if an item is published within a specific site, the whole cache will not be cleared, but the publish will only remove the cache key matching the site name. 
 
 Often instead of using the `AlwaysClearPredicate` clear predicate, a better alternative is to use the `TemplateClearPredicate` which will allow you to configure a list of trigger templates, so only items using these templates will clear the cache upon publish.
 
