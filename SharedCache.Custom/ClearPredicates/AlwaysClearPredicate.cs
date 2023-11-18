@@ -16,9 +16,10 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="AlwaysClearPredicate"/> class.
         /// </summary>
-        public AlwaysClearPredicate(bool clearOnGlobalPublish)
+        public AlwaysClearPredicate(bool clearOnGlobalPublish, bool useSiteNameAsCacheKey)
         {
             this.ClearOnGlobal = clearOnGlobalPublish;
+            this.UseSiteNameAsCacheKey = useSiteNameAsCacheKey;
         }
 
         /// <inheritdoc/>
