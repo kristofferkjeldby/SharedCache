@@ -83,7 +83,7 @@ To clear the static HTML cache, the editor must explicit select this during publ
 
 ![Example](https://raw.githubusercontent.com/kristofferkjeldby/SharedCache/main/readme.png)
 
-For configuration the SharedCache.Html addeds the following patch files:
+For configuration the `SharedCache.Html` addeds the following patch files:
 
 ```
 <configuration xmlns:patch="http://www.sitecore.net/xmlconfig/" xmlns:role="http://www.sitecore.net/xmlconfig/role/">
@@ -180,6 +180,33 @@ if DoClear
       if publish:end
          clear string cache
 ```
+For configuration the `SharedCache.Custom` addeds the following patch files:
+
+```
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/" xmlns:role="http://www.sitecore.net/xmlconfig/role/">
+    <sitecore role:require="ContentDelivery">
+        <settings>
+            <setting name="SharedCache.Html.SecondLevelHtmlCacheMethod" value="Redis" />
+            <setting name="SharedCache.Html.SharedHtmlCacheClearOnly" value="false" />
+        </settings>
+    </sitecore>
+</configuration>
+```
+
+And:
+
+```
+<configuration xmlns:patch="http://www.sitecore.net/xmlconfig/" xmlns:role="http://www.sitecore.net/xmlconfig/role/">
+    <sitecore role:require="ContentManagement">
+        <settings>
+            <setting name="SharedCache.Html.SecondLevelHtmlCacheMethod" value="Redis" />
+            <setting name="SharedCache.Html.SharedHtmlCacheClearOnly" value="true" />
+        </settings>
+    </sitecore>
+</configuration>
+```
+
+Just like the shared HTML cache setting, these files configures the second level cache method used for the shared custom caches. They also sets the CM server in ClearOnly mode. This means that cache items added on the CM will not be added to the second level cache.
 
 To construct a shared list cache for the object type `MyCacheObject` we use the following constructor:
 
@@ -191,10 +218,11 @@ new SharedCustomListCache<MyCacheObject>(
 );
 ```
 
-This will create a `SharedCustomListCache` using the second level cache method configured in the `SharedCache.Html.SecondLevelSharedCustomCacheMethod` setting. This will allow us to use e.g. a `FileStringCache` locally and a `RedisStringCache` on test environments.
-It will also put the cache on the CM server in clearOnlyMode (configured in the setting `SharedCache.Html.SharedCustomCacheClearOnly`). This means that the cache on the CM server will not add content to the second level cache. This prevents unpublished items on the CM server from interfering with the CD servers cache. 
+This will create a `SharedCustomListCache` using the second level cache method configured in the `SharedCache.Html.SecondLevelSharedCustomCacheMethod` setting. It will also put the cache on the CM server in clearOnlyMode (configured in the setting `SharedCache.Html.SharedCustomCacheClearOnly`). This means that the cache on the CM server will not add content to the second level cache. 
 
-Also, in this case the `AlwaysClearPredicate` has been set to `ClearOnGlobal = true` and `UseSiteNameAsCacheKey = true` which means that if an item is published within a specific site, the whole cache will not be cleared, but the publish will only remove the cache key matching the site name. 
+Both the `StringCache` second level cache and the `clearOnly` exists as optional properties on the constructor, but leaving them out will use the values configured in the config files above. 
+
+In this case the `AlwaysClearPredicate` has been set to `ClearOnGlobal = true` and `UseSiteNameAsCacheKey = true` (the two constructor paramenters) which means that if an item is published within a specific site, the whole cache will not be cleared, but the publish will only remove the cache key matching the site name. 
 
 Often instead of using the `AlwaysClearPredicate` clear predicate, a better alternative is to use the `TemplateClearPredicate` which will allow you to configure a list of trigger templates, so only items using these templates will clear the cache upon publish.
 
@@ -203,12 +231,3 @@ Also instead of hard-coding the second level cache, SharedCache offers a StringC
 ## Initialization of shared caches
 
 All the shared caches will do a prefetch upon initialization. This means that they will fetch all keys from the second level cache and load them into the first level memory cache. This is an important component in the optimizations offered by the SharedCache framework for solutions where new CD instances is created - e.g., via auto scaling. This means that all new instances will have filled up caches immediately after initialization.
-
-
-
-
-
-
-
-
-
