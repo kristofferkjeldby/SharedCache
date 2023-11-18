@@ -31,7 +31,7 @@
         /// <param name="keyCacheSerializer">The key cache serializer controlling the serialization of the TKey to the second level cache.</param>
         /// <param name="valueCacheSerializer">The value cache serializer controlling the serialization of the TValue to the second level cache.</param>
         /// <param name="clearOnly">Whether to put the second level cache in clear only mode.</param>
-        public SharedCustomDictionaryCache(string name, StringCache stringCache, ClearPredicate clearPredicate, ICacheSerializer<TKey> keyCacheSerializer, ICacheSerializer<TValue> valueCacheSerializer, bool clearOnly) : base(name, clearPredicate)
+        public SharedCustomDictionaryCache(string name, StringCache stringCache, ClearPredicate clearPredicate, ICacheSerializer<TKey> keyCacheSerializer, ICacheSerializer<TValue> valueCacheSerializer, bool clearOnly = false) : base(name, clearPredicate)
         {
             this.secondLevelCache = stringCache;
             this.keySerializer = keyCacheSerializer.Serialize;
