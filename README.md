@@ -151,7 +151,7 @@ if DoClear
          clear string cache
 ```
 
-To construct a shared list cache for the object type `MyCacheObject` we use the following constructor:
+To construct a shared list cache for the object type `MyCacheObject` we use the following constructor using a RedisStringCache as a second level cache:
 
 ```
 new SharedCustomListCache<MyCacheObject>(
@@ -166,6 +166,10 @@ new SharedCustomListCache<MyCacheObject>(
 In this case the `AlwaysClearPredicate` has been set to `ClearOnGlobal = true` and `UseSiteNameAsCacheKey = true` which means that if an item is published within a specific site, the whole cache will not been cleared, but the publish will only remove the cache key matching the site name. 
 
 Often instead of using the `AlwaysClearPredicate` clear predicate, a better alternative is to use the `TemplateClearPredicate` which will allow you to configure a list of trigger templates, so only items using these templates will clear the cache upon publish.
+
+Also instead of hard-coding the second level cache, SharedCache offers a StringCacheFactory where the type can be read for e.g. a Sitecore setting. This will allow us to use e.g. a FileStringCache locally and a RedisStringCache on test environments.
+
+
 
 
 
