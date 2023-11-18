@@ -186,7 +186,7 @@ if DoClear
 ```
 For configuration the `SharedCache.Custom` addeds the following patch files:
 
-[SharedCache.Custom/App_Config/Include/Foundation/SharedCache.Custom.CD.config](SharedCache.Html/App_Config/Include/Foundation/SharedCache.Custom.CD.config)
+[SharedCache.Custom/App_Config/Include/Foundation/SharedCache.Custom.CD.config](SharedCache.Custom/App_Config/Include/Foundation/SharedCache.Custom.CD.config)
 
 ```
 <configuration xmlns:patch="http://www.sitecore.net/xmlconfig/" xmlns:role="http://www.sitecore.net/xmlconfig/role/">
@@ -201,7 +201,7 @@ For configuration the `SharedCache.Custom` addeds the following patch files:
 
 And:
 
-[SharedCache.Custom/App_Config/Include/Foundation/SharedCache.Custom.CM.config](SharedCache.Html/App_Config/Include/Foundation/SharedCache.Custom.CM.config)
+[SharedCache.Custom/App_Config/Include/Foundation/SharedCache.Custom.CM.config](SharedCache.Custom/App_Config/Include/Foundation/SharedCache.Custom.CM.config)
 
 ```
 <configuration xmlns:patch="http://www.sitecore.net/xmlconfig/" xmlns:role="http://www.sitecore.net/xmlconfig/role/">
