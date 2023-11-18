@@ -123,7 +123,11 @@ namespace SharedCache.Custom.ClearPredicates
 }
 ```
 
-Of special notice is the property `ClearOnGlobal` and `UseSiteNameAsCacheKey`. The `ClearOnGlobal` determines whether the cache should be cleared for items not belonging to a site (items not from `Sitecore/Content`). The `UseSiteNameAsCacheKey` is a bit special. Normally, if this is set for false, the entire cache is cleared is the `DoClear` returns true. However, I often use the custom shared cache in a way so that each site has a key within the cache (e.g. using the `SharedCustomListCache` to contain a list of some objects for each site). In that case I do not want to clear the entire cache upon a publish, I simply want to remove the particular key for the published site. If setting the `UseSiteNameAsCacheKey` to true, this is what is going to happen for items that belong to a particular site (global items will still clear the entire cache if ClearOnGlobal is true).
+Of special notice is the property `ClearOnGlobal` and `UseSiteNameAsCacheKey`. The `ClearOnGlobal` determines whether the cache should be cleared for items not belonging to a site (items not from `Sitecore/Content`). 
+
+The `UseSiteNameAsCacheKey` is a bit special. Normally, if this is set for false, the entire cache is cleared is the `DoClear` returns true. However, we often use the custom shared cache in a way so that each site has a key within the cache (e.g. using the `SharedCustomListCache` to contain a list of some objects for each site). 
+
+In that case we do not want to clear the entire cache upon a publish, we simply want to remove the particular key for the published site. If setting the `UseSiteNameAsCacheKey` to true, this is what is going to happen for items that belong to a particular site (global items will still clear the entire cache if `ClearOnGlobal` is true).
 
 The logic for the clearing of shared custom caches can be described using this pseudo code:
 
