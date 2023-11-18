@@ -26,31 +26,31 @@ The SharedCache comes with a number of string caches using different storage mec
 
 #### FileStringCache
 
-This string cache used the file system as a storage. It is a rather crude implementation, storing using keys as file names, and is not optimized for production use. These string cache is provided to help local testing or to use a shared cache in a situation where Redis is not available (e.g. on a local developers machine). 
+This string cache used the file system as a storage. It is a rather crude implementation, storing using keys as file names, and is not optimized for production use. This string cache is provided to help local testing or to use a shared cache in a situation where Redis is not available (e.g. on a local developers machine). 
 
 #### IndexedStringCache
 
-To avoid problems with keys containing illegal characters with the `FileStringCache`, the `IndexedStringCache` is offered as an wrapper for the `FileStringCache` or string caches with similiar limitations. It stores keys in a index, circumventing problems with illegal characters. 
+To avoid problems with keys containing illegal characters with the `FileStringCache`, the `IndexedStringCache` is offered as an wrapper for the `FileStringCache` or string caches with similiar limitations. It stores keys in an index, circumventing problems with illegal characters. 
 
 #### HttpStringCache
 
-Uses the Http cache as a storage mechanism. Is in-memory only, and provided for some of the same reasons as the `FileStringCache` – it allows running simulating a shared cache on a local machine.
+Uses the Http cache as a storage mechanism. Is in-memory only and provided for some of the same reasons as the `FileStringCache` – it allows running simulating a shared cache on a local machine.
 
 #### HttpSessionStringCache
 
-Uses the Http session as storage mechanism. Is in-memory only, and provided for some of the same reasons as the `FileStringCache` – it allows running simulating a shared cache on a local machine.
+Uses the Http session as storage mechanism. Is in-memory only and provided for some of the same reasons as the `FileStringCache` – it allows running simulating a shared cache on a local machine.
 
 #### RedisStringCache
 
-Offers the same capabilities as the other string caches, but uses a Redis database. Will by default use the default Sitecore Redis connection string (`redis.sessions`).
+Offers the same capabilities as the other string caches but uses a Redis database. Will by default use the default Sitecore Redis connection string (`redis.sessions`).
 
 ### Isolation
 
-When you create a string cache, you will always provide a name for the string cache. Becuase all the string caches uses a shared storage (e.g. the file system or a Redis database), the `SharedCache.Core.StringCaches.Keys` namespace contains logic to wrap and unwrap keys. This allow two string caches to use the same Redis database, without risking key collisions. It also allow one string cache to be cleared without clearing other caches within the same storage.
+When you create a string cache, you will always provide a name for the string cache. Becuase all the string caches uses a shared storage (e.g. the file system or a Redis database), the `SharedCache.Core.StringCaches.Keys` namespace contains logic to wrap and unwrap keys. This allows two string caches to use the same Redis database, without risking key collisions. It also allows one string cache to be cleared without clearing other caches within the same storage.
 
 ### Serialization
 
-To support the storage of a object of any type into the second level string caches, the SharedCache uses JSON serialization. As the SharedHtmlCache already stored strings of HTML, this is relevant only for the shared custom caches. However, the cache mechanism can be overwritten for a specific shared custom cache by implementing the `SharedCache.Core.Serialization.ICacheSerializer<T>` interface:
+To support the storage of an object of any type into the second level string caches, the SharedCache uses JSON serialization. As the SharedHtmlCache already stored strings of HTML, this is relevant only for the shared custom caches. However, the cache mechanism can be overwritten for a specific shared custom cache by implementing the `SharedCache.Core.Serialization.ICacheSerializer<T>` interface:
 
 ```
 namespace SharedCache.Core.Serialization
@@ -85,7 +85,7 @@ To clear the static HTML cache, the editor must explicit select this during publ
 
 ## SharedCache.Custom
 
-These three shared custom caches (`SharedCustomCache`, `SharedCustomListCache` and `SharedCustomDictionaryCache`) are implemented in the `SharedCache.Custom` project, and include advanced option to control the clearing of a cache based on the publishing of items.
+These three shared custom caches (`SharedCustomCache`, `SharedCustomListCache` and `SharedCustomDictionaryCache`) are implemented in the `SharedCache.Custom` project and include advanced option to control the clearing of a cache based on the publishing of items.
 
 ### Cache clearing
 
@@ -164,7 +164,7 @@ new SharedCustomListCache<MyCacheObject>(
 );
 ```
 
-In this case the `AlwaysClearPredicate` has been set to `ClearOnGlobal = true` and `UseSiteNameAsCacheKey = true` which means that if an item is published within a specific site, the whole cache will not been cleared, but the publish will only remove the cache key matching the site name. 
+In this case the `AlwaysClearPredicate` has been set to `ClearOnGlobal = true` and `UseSiteNameAsCacheKey = true` which means that if an item is published within a specific site, the whole cache will not be cleared, but the publish will only remove the cache key matching the site name. 
 
 Often instead of using the `AlwaysClearPredicate` clear predicate, a better alternative is to use the `TemplateClearPredicate` which will allow you to configure a list of trigger templates, so only items using these templates will clear the cache upon publish.
 
