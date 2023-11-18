@@ -153,22 +153,24 @@ if DoClear
          clear string cache
 ```
 
-To construct a shared list cache for the object type `MyCacheObject` we use the following constructor using a RedisStringCache as a second level cache:
+To construct a shared list cache for the object type `MyCacheObject` we use the following constructor:
 
 ```
 new SharedCustomListCache<MyCacheObject>(
    cacheName,
-   new RedisStringCache(cacheName),
    new AlwaysClearPredicate(true, true),
    new JsonCacheSerializer<MyCacheObject>(),
 );
 ```
 
-In this case the `AlwaysClearPredicate` has been set to `ClearOnGlobal = true` and `UseSiteNameAsCacheKey = true` which means that if an item is published within a specific site, the whole cache will not be cleared, but the publish will only remove the cache key matching the site name. 
+This will create a `SharedCustomListCache` using the second level cache method configured in the setting `SharedCache.Html.SecondLevelSharedCustomCacheMethod`. This will allow us to use e.g. a FileStringCache locally and a RedisStringCache on test environments.
+It will also put the cache on the CM server in clearOnlyMode (configured in the setting `SharedCache.Html.SharedCustomCacheClearOnly`). This means that the cache on the CM server will not add content to the second level cache. This prevents unpublished items on the CM server from interfering with the CD servers cache. 
+
+Also, in this case the `AlwaysClearPredicate` has been set to `ClearOnGlobal = true` and `UseSiteNameAsCacheKey = true` which means that if an item is published within a specific site, the whole cache will not be cleared, but the publish will only remove the cache key matching the site name. 
 
 Often instead of using the `AlwaysClearPredicate` clear predicate, a better alternative is to use the `TemplateClearPredicate` which will allow you to configure a list of trigger templates, so only items using these templates will clear the cache upon publish.
 
-Also instead of hard-coding the second level cache, SharedCache offers a StringCacheFactory where the type can be read for e.g. a Sitecore setting. This will allow us to use e.g. a FileStringCache locally and a RedisStringCache on test environments.
+Also instead of hard-coding the second level cache, SharedCache offers a StringCacheFactory where the type can be read for e.g. a Sitecore setting. 
 
 ## Initialization of shared caches
 
