@@ -85,6 +85,8 @@ To clear the static HTML cache, the editor must explicit select this during publ
 
 For configuration the `SharedCache.Html` addeds the following patch files:
 
+[SharedCache.Html/App_Config/Include/Foundation/SharedCache.CD.config](SharedCache.Html/App_Config/Include/Foundation/SharedCache.CD.config)
+
 ```
 <configuration xmlns:patch="http://www.sitecore.net/xmlconfig/" xmlns:role="http://www.sitecore.net/xmlconfig/role/">
     <sitecore role:require="ContentDelivery">
@@ -97,6 +99,8 @@ For configuration the `SharedCache.Html` addeds the following patch files:
 ```
 
 And:
+
+[SharedCache.Html/App_Config/Include/Foundation/SharedCache.CM.config](SharedCache.Html/App_Config/Include/Foundation/SharedCache.CM.config)
 
 ```
 <configuration xmlns:patch="http://www.sitecore.net/xmlconfig/" xmlns:role="http://www.sitecore.net/xmlconfig/role/">
