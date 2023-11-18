@@ -24,19 +24,27 @@ This means that the shared caches still primary stores values in memory, and wil
 
 ### Supported storage mechanisms
 
-The SharedCache comes with a 
+The SharedCache comes with a number of string caches using different storage mechanisms:
 
 #### FileStringCache
 
- ses the file system as a storage. It is a rather crude implementation, storing using keys as file names, and is not optimized for production use. These string cache is provided to help local testing or to use a shared cache in a situation where Redis is not available (e.g. on a local developers machine). 
+This string cache used the file system as a storage. It is a rather crude implementation, storing using keys as file names, and is not optimized for production use. These string cache is provided to help local testing or to use a shared cache in a situation where Redis is not available (e.g. on a local developers machine). 
 
-`IndexedStringCache`: To avoid problems with keys containing illegal characters with the `FileStringCache`, the `IndexedStringCache` is offered as an wrapper for the `FileStringCache` or string caches with similiar limitations. It stores keys in a index, circumventing problems with illegal characters. 
+#### IndexedStringCache
 
-`HttpStringCache`: Uses the Http cache as a storage mechanism. Is in-memory only, and provided for some of the same reasons as the `FileStringCache` – it allows running simulating a shared cache on a local machine.
+To avoid problems with keys containing illegal characters with the `FileStringCache`, the `IndexedStringCache` is offered as an wrapper for the `FileStringCache` or string caches with similiar limitations. It stores keys in a index, circumventing problems with illegal characters. 
+
+#### HttpStringCache
+
+Uses the Http cache as a storage mechanism. Is in-memory only, and provided for some of the same reasons as the `FileStringCache` – it allows running simulating a shared cache on a local machine.
+
+#### HttpSessionStringCache
 
 `HttpSessionStringCache`: Uses the Session storage. Is in-memory only, and provided for some of the same reasons as the `FileStringCache` – it allows running simulating a shared cache on a local machine.
 
-`RedisStringCache`:  Offers the same capabilities as the other string caches, but uses a Redis database. 
+#### RedisStringCache
+
+Offers the same capabilities as the other string caches, but uses a Redis database. Will by default use the default Sitecore Redis connection string (`redis.sessions`).
 
 ### Isolation
 
