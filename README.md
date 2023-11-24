@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The SharedCache framework is an extension to the build in caches in SitecoreXM/XP. It offers the ability for multiple CD instances to share a single _shared cache_ (hosted either in the filesystem, memory or in Redis). 
+The SharedCache framework is an extension to the build-in caches in Sitecore XM/XP. It offers the ability for multiple CD instances to share a single _shared cache_ (hosted either in the filesystem, memory or in Redis). 
 
 In a large Sitecore solution with multiple CD servers this will result in improved performance as the cached data from one instance can be reused by other instances. This is especially important if the number of CD instances vary, as new CD instaces will prefetch the cache from the shared cache.
 
